@@ -1,0 +1,217 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+cp = []
+sp = []
+p = []
+prp =[]
+
+fr =0
+
+
+while True:
+    list=[]
+    count=1
+    fr+=1
+    total=0      #Inputing the Franchise details until all of them are completed
+    
+    print("\nWelcome, Franchise %d. Please enter the Cost Price transaction details:" %(fr))
+    
+    while True:  #Inputing the Franchise cost price details
+        
+        item= input("Enter item no %d "%count)
+        if item=='done' or item=='Done':
+            break
+        quantity= int(input('Quantity for item no %d : ' %(count)))
+        price= float(input('Price for item no %g:'%(count)))
+        count +=1
+        list.append(item)
+        total +=quantity*price
+        
+        
+    print('\nCost Price Details for Franchise: ',list)    
+    print(total) 
+    cp.append(total)
+    list.clear()
+    
+    print("\nPlease enter the Selling Price transaction details:")
+    count=1
+    total=0
+    
+    while True:   #Inputing the Franchise selling price details
+        item= input("Enter item no %d "%count)
+        if item=='done' or item=='Done':
+                    break
+        ans1 =int(input("Is there any Discount or Promo offered on the item at the store? \n 1- Discount \n 2- Promo \n 3- Both Discount and Promo \n 4- No \n"))
+  
+        if ans1== 1:   #Creating conditions for successive discounts
+            ans2= int(input("\nAre there successive discounts? \n 1- Yes \n 2- No\n"))
+            if ans2== 1:
+                
+                if item=='done' or item=='Done':
+                    break
+                quantity= int(input('Quantity for item no %d : ' %(count)))
+                mprice= float(input('Marked Price for item no %g:'%(count)))
+                d1= float(input('Initial Discount for item no %g:'%(count)))
+                d2= float(input('Successive Discount for item no %g:'%(count)))
+                d=  d1 + d2- ((d1*d2) /100)
+                price= mprice- ((mprice*d)/100) 
+                count +=1
+                list.append(item)
+                total +=quantity*price
+                    
+            elif ans2 == 2:
+                    
+                
+                if item=='done' or item=='Done':
+                    break
+                quantity= int(input('Quantity for item no %d : ' %(count)))
+                mprice= float(input('Marked Price for item no %g:'%(count)))
+                d= float(input('Discount for item no %g:'%(count)))
+                price= mprice- ((mprice*d)/100) 
+                count +=1
+                list.append(item)
+                total +=quantity*price
+        
+        elif ans1== 2:   #Creating conditions for discount and promos
+            
+            if item=='done' or item=='Done':
+                break
+            quantity= int(input('Quantity for item no %d : ' %(count)))
+            mprice= float(input('Marked Price for item no %g:'%(count)))
+            print("For promo like- Buy 'x' goods, get 'y' goods free")
+            x= int(input("Enter the value of x : "))
+            y= int(input("Enter the value of y : "))
+            z= y/(x+y)
+            price= mprice- ((mprice*z)/100) 
+            count +=1
+            list.append(item)
+            total +=quantity*price
+            
+        
+        elif ans1== 3:  #Creating conditions for successive discounts and promos
+            ans3= int(input("\nAre there successive discounts? \n 1- Yes \n 2- No\n"))
+            if ans3== 1:
+                
+                if item=='done' or item=='Done':
+                    break
+                quantity= int(input('Quantity for item no %d : ' %(count)))
+                mprice= float(input('Marked Price for item no %g:'%(count)))
+                d1= float(input('Initial Discount for item no %g:'%(count)))
+                d2= float(input('Successive Discount for item no %g:'%(count)))
+                d=  d1 + d2- ((d1*d2) /100)
+                    
+                print("For promo like- Buy 'x' goods, get 'y' goods free")
+                x= int(input("Enter the value of x : "))
+                y= int(input("Enter the value of y : "))
+                z= y/(x+y)
+                    
+                dt= d + z- ((d*z) /100)
+                price= mprice- ((mprice*dt)/100) 
+                count +=1
+                list.append(item)
+                total +=quantity*price
+                    
+            elif ans3 == 2:
+                    
+                
+                if item=='done' or item=='Done':
+                    break
+                quantity= int(input('Quantity for item no %d : ' %(count)))
+                mprice= float(input('Marked Price for item no %g:'%(count)))
+                d= float(input('Discount for item no %g:'%(count)))
+                    
+                print("For promo like- Buy 'x' goods, get 'y' goods free")
+                x= int(input("Enter the value of x : "))
+                y= int(input("Enter the value of y : "))
+                z= y/(x+y)
+                    
+                dt= d + z- ((d*z) /100)
+                price= mprice- ((mprice*dt)/100)  
+                count +=1
+                list.append(item)
+                total +=quantity*price
+        
+        
+        
+        elif ans1== 4:
+            
+            if item=='done' or item=='Done':
+                break
+            quantity= int(input('Quantity for item no %d : ' %(count)))
+            price= float(input('Price for item no %g:'%(count)))
+            count +=1
+            list.append(item)
+            total +=quantity*price
+        
+        
+    print('\nSelling Price Details for Franchise: ',list)    
+    r_total= round(total,2)
+    print(r_total) 
+    sp.append(total)
+    list.clear()
+    
+    
+    ans=int(input("\nLet us move on to next Franchise? \n 1- Yes \n 2- No\n"))
+    
+    if ans==1:   #Repeating the process for next franchise
+        continue
+    else:
+        break
+        
+
+def profit(CostPrice, SellingPrice) :
+    pr = (SellingPrice - CostPrice)
+    return pr
+
+def profit_per(CostPrice, SellingPrice) :
+    prp = ((SellingPrice - CostPrice)/CostPrice)*100
+    return prp
+
+for i in range(fr):
+    p.append(profit(cp[i],sp[i]))
+    prp.append(profit_per(cp[i],sp[i]))
+    
+
+x1 = np.array(p)         #display net profit/loss and net p/l percentage
+x2 = np.array(prp)
+data = pd.DataFrame({'Net Profit/Loss':x1, 'Net P/L Percentage':x2})
+data
+
+
+import matplotlib.pyplot as plt
+data['Net Profit/Loss'].plot(kind='bar', figsize=(4,4), color="coral", fontsize=13)
+x = np.linspace(-5,5,100)
+y= x*0.000001
+plt.plot(x, y)    #plot view of net profit/loss
+
+
+plt.xlabel("Franchisee", fontsize=12)
+plt.ylabel("Net Profit/Loss", fontsize=12)
+plt.title("Net Profit/Loss of Franchisees", fontsize=16)
+
+
+
+loss=data.loc[(data['Net Profit/Loss Percentage']<=10)]
+loss
+
+
+
+
+cp1=[]    #determining the gap between cost price and loss, to achieve 10% profit
+
+for i in range(fr):
+    if p[i]>0:
+        cp1.append(cp[i])
+        
+    if p[i]<=0:
+        cp1.append((sp[i]*100)/(100+10))
+        
+        
+cp = np.array(cp)
+cp1 = np.array(cp1)
+
+print("The cost price support to be provided to franchises ")
+
+data1 = pd.DataFrame({'Cost Price support':(cp-cp1)})
+data1   #displaying final cost price support to achieve 10% profit
